@@ -1,0 +1,11 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+gurobi.lic
+*.lic
+*.log
+dist/
+# Conservar los respaldos de resultados en Git cuando se prepare la entrega.
