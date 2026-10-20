@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.11
 # importamos librerías
 from gurobipy import Model, GRB, quicksum
+import sys
 # Cargamos datos
 from load_data import *
 
@@ -35,7 +36,7 @@ model.addConstrs((u[k, t-1]+ quicksum(z[i, k, t] for i in I)== v[k, t]+u[k, t] f
 model.addConstrs((v[k, t] <= quicksum(tau[j]*e[j, k, t] for j in F) for k in U for t in T), name="R10")
 model.addConstrs((d[i, t] == quicksum(w[i, p, t] for p in P)+quicksum(z[i, k, t]for k in U)
                    + w_v[i, t] for t in T for i in I), name="R11")
-model.addConstrs((quicksum(w[i, p, t] for i in I) <= d_c[p]), name="R12")
+model.addConstrs((quicksum(w[i, p, t] for i in I) <= d_c[p] for p in P for t in T), name="R12")
 ## No es necesario establecer la no-negatividad de las variables, por convención
 ## Ver https://docs.gurobi.com/projects/optimizer/en/current/concepts/modeling/variables.html
 # Se actualiza el modelo
