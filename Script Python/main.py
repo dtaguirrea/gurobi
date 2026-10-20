@@ -11,7 +11,7 @@ model.setParam('TimeLimit', 1800)
 
 # Variables
 x = model.addVars(F, U, vtype=GRB.BINARY, name="x_jk")
-y_0 = model.addVars(F, U, T, vtype=GRB.BINARY, name="y0_jkt")
+y_0 = model.addVars(F, U, T2, vtype=GRB.BINARY, name="y0_jkt")
 y_c = model.addVars(F, U, T, vtype=GRB.BINARY, name="yc_jkt")
 e = model.addVars(F, U, T, vtype=GRB.BINARY, name="e_jkt")
 u = model.addVars(U, T2, vtype=GRB.CONTINUOUS, name="u_kt")
@@ -43,11 +43,40 @@ model.addConstrs((quicksum(w[i, p, t] for i in I) <= d_c[p] for p in P for t in 
 model.update()
 
 # Funcion objetivo
+def alpha_1(t: int) -> float:
+    return quicksum(g_k * v[k, t] for k in U)
+
+def alpha_2(t:int ) -> float:
+    return - quicksum((c_p[j] + m[k]) * y_0[j, k, t] for k in U for j in F)
+
+def alpha_3(t:int ) -> float:
+    return - quicksum(c_o[j] * e[j, k, t] for j in F for k in U)
+
+def alpha_4(t:int ) -> float:
+    return - quicksum(c_t[i, k] * z[i, k, t] for k in U for i in I)
+
+def alpha_5(t:int ) -> float:
+    return - quicksum(c_v[i] * w_v[i, t] for i in I)
+
+def alpha_6(t:int ) -> float:
+    return - quicksum(c_r[i, p] * w[i, p, t] for i in I for p in P)
+
+def alpha_7(t:int ) -> float:
+    return - quicksum(c_a * u[k, t] for k in U)
+
+def alpha(t: int) -> float:
+    return alpha_1(t) + alpha_2(t) + alpha_3(t) + alpha_4(t) + alpha_5(t) + alpha_6(t) + alpha_7(t)
+
 # TEMPORAL
+"""
 func_obj = -(quicksum(x[j, k]+y_0[j, k, t]+y_c[j, k, t]+e[j, k, t] for j in F for k in U for t in T) + 
                     quicksum(u[k, t] + v[k, t] for k in U for t in T) + quicksum(z[i, k, t] for i in I for k in U for t in T) + quicksum(w[i, p, t] for i in I for p in P for t in T) + quicksum(w_v[i, t] for i in I for t in T))
+"""
+func_obj = quicksum(alpha(t)/((1+k_i)**t) for t in T)
 model.setObjective(func_obj, GRB.MAXIMIZE)
 
 # Resolvemos el modelo
 model.optimize()
 print("Se gano", model.ObjVal)
+
+print("\n".join(map(lambda i: f"{i.VarName}: {i.X}",model.getVars())))

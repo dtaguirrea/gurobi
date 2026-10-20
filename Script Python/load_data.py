@@ -1,5 +1,4 @@
 #!/usr/bin/env python3.11
-import sys
 
 import pandas as pd
 import os
@@ -83,13 +82,14 @@ F = list(range(1, len(c_p)+1))
 P = list(range(1, len(d_c)+1))
 I = list(range(1, len(c_v)+1))
 U = list(range(1, len(m)+1))
-T = list(range(1, len(c_r)//len(P)+1))
+T = list(range(1, len(d)//len(I)+1))
 T2 = list(range(0, len(c_r)//len(P)+1))
-
+print(F)
 # Realizamos validaciones
-if len(d) != len(F)*len(T):
-    print(len(d), len(F)*len(T))
+if len(d) != len(I)*len(T):
+    print(len(d), len(I)*len(T))
     raise ValueError("La hoja it no tiene valores adecuados")
 
-if len(c_t) != len(F)*len(U):
-    raise ValueError("La hoja ik no tiene valores adecuados")
+if len(c_t) != len(I)*len(U):
+    raise ValueError(f"La hoja ik no tiene valores adecuados, cantidad de columnas={len(c_t)}",
+                     f"I= {len(I)} U={len(U)}")
