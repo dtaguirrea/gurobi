@@ -32,3 +32,6 @@ py -3 -m venv .venv
 Las rutas se resuelven desde la ubicación del proyecto.
 Las salidas se guardan en `Análisis de Excels/`.
 No subir licencias ni credenciales a GitHub.
+
+<img width="228" height="228" alt="image" src="https://github.com/user-attachments/assets/e58904d9-ced2-4cb2-b4c9-c3fd1a5af69a" />
+
