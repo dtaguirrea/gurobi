@@ -77,6 +77,7 @@ model.setObjective(func_obj, GRB.MAXIMIZE)
 
 # Resolvemos el modelo
 model.optimize()
-print("Se gano", model.ObjVal)
 
 print("\n".join(map(lambda i: f"{i.VarName}: {i.X}",model.getVars())))
+
+print("Se gano", model.ObjVal)
