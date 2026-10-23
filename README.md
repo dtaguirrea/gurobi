@@ -36,7 +36,7 @@ en Windows.
 Se recomienda usar el autocompletado con tab para mayor facilidad.
 
 ## Estructura
-- Los parámetros se encuentran definidos en la carpeta ´Instancias Excel´ en el archivo ´datos.xlsx´
+- Los parámetros se encuentran definidos en la carpeta ´Instancias Excel´ en el archivo ´datos-opti-E3.xlsx´
 - Los valores de las variables se encuentran en la carpeta "Análisis de Excels" en el archivo ´variables.xlsx´
 ### Archivos python
 - ´load_data.py´: Se encarga de cargar los parámetros definidos en el excel cómo variables (y definir sus conjuntos respectivos). Además se realizan validaciones
