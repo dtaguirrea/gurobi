@@ -3,6 +3,7 @@
 from gurobipy import Model, GRB, quicksum
 import pandas as pd
 import sys
+from graficos import save_graphs
 # Cargamos datos
 from load_data import *
 
@@ -196,6 +197,16 @@ with pd.ExcelWriter(os.path.join("Análisis de Excels", "variables.xlsx")) as wr
     w_df.to_excel(writer, sheet_name="w", index=False)
     w_v_df.to_excel(writer, sheet_name="w_v", index=False)
 
+# Generamos los gráficos
+save_graphs({"x": x_df, 
+             "y_0": y_0_df, 
+             "y_c": y_c_df, 
+             "e": e_df, 
+             "u": u_df, 
+             "v": v_df, 
+             "z": z_df, 
+             "w": w_df, 
+             "w_v": w_v_df})
 
 with open("variables.txt", "w") as f:
     print("\n".join(map(lambda i: f"{i.VarName}: {i.X}",model.getVars())), file=f)
