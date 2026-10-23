@@ -27,7 +27,7 @@ w_v = model.addVars(I, T, vtype=GRB.CONTINUOUS, name="wv_it")
 model.addConstrs((quicksum(x[j, k] for j in F) <= 1 for k in U), name="R1")
 model.addConstrs((quicksum(y_0[j, k, t] for t in T) == x[j, k] for j in F for k in U), name="R2")
 model.addConstrs((quicksum(y_c[j, k, t] for j in F for k in U) <= beta for t in T), name="R3")
-model.addConstrs((y_c[j, k, t] == quicksum(y_0[j, k, t1] for t1 in range(max(1, t-t_c[j]+1), t)
+model.addConstrs((y_c[j, k, t] == quicksum(y_0[j, k, t1] for t1 in range(max(1, t-t_c[j]+1), t+1)
                                            ) for j in F for k in U for t in T), name="R4")
 model.addConstrs((y_0[j, k, t] == 0 for j in F for k in U for t in range(T[-1]-t_c[j]+1, T[-1])), name="R5")
 model.addConstrs((e[j, k, t] == quicksum(y_0[j, k, t3] for t3 in range(1, t-t_c[j])
@@ -39,6 +39,7 @@ model.addConstrs((v[k, t] <= quicksum(tau[j]*e[j, k, t] for j in F) for k in U f
 model.addConstrs((d[i, t] == quicksum(w[i, p, t] for p in P)+quicksum(z[i, k, t]for k in U)
                    + w_v[i, t] for t in T for i in I), name="R11")
 model.addConstrs((quicksum(w[i, p, t] for i in I) <= d_c[p] for p in P for t in T), name="R12")
+# model.addConstr((quicksum(z[i, k, t] for k in U for i in I for t in T) >= 0.2*quicksum(d[i, t] for i in I for t in T)), name="R13")
 ## No es necesario establecer la no-negatividad de las variables, por convención
 ## Ver https://docs.gurobi.com/projects/optimizer/en/current/concepts/modeling/variables.html
 # Se actualiza el modelo
@@ -83,7 +84,7 @@ model.Params.DualReductions = 0
 model.Params.SoftMemLimit = 12.0  # GB
 model.Params.Threads = 12
 model.Params.NodeFileStart = 0.5
-model.Params.MIPGap = 0.008
+model.Params.MIPGap = 0.01
 # Aplicamos las restricciones
 model.update()
 # Optimizamos
@@ -184,6 +185,11 @@ w_v_df = pd.DataFrame(
         for t in T
     ]
 )
+objval_df = pd.DataFrame(
+    [
+        {"objval": model.ObjVal}
+    ]
+)
 
 # Los escribimos en el excel
 
@@ -197,6 +203,7 @@ with pd.ExcelWriter(os.path.join("Análisis de Excels", "variables.xlsx")) as wr
     z_df.to_excel(writer, sheet_name="z", index=False)
     w_df.to_excel(writer, sheet_name="w", index=False)
     w_v_df.to_excel(writer, sheet_name="w_v", index=False)
+    objval_df.to_excel(writer, sheet_name="ObjValue", index=False)
 
 # Generamos los gráficos
 """
