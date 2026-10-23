@@ -1,13 +1,13 @@
 # Entrega 3 del proyecto del curso ICS1113 Optimización
 ## Aspectos formales
 ### Integrantes
-Daniel Tomás Aguirre Araya - 23640812 - Sección 5
-Catalina Ignacia Casas Escobar - 24200581 - Sección 3
-Raúl Ignacio Elgueta Herrera - 23200510 - Sección 5
-Gonzalo Andrés Moraga Monsalve - 23642025 - Sección 3
-Javier Ignacio Muñoz Andrade - 23641851 - Sección 3
-Andrés Enrique Poblete Troncoso - 23644397 - Sección 3
-Marianna Valentina Sanguinetti Durán - 23646896 - Sección 5
+- Daniel Tomás Aguirre Araya - 23640812 - Sección 5
+- Catalina Ignacia Casas Escobar - 24200581 - Sección 3
+- Raúl Ignacio Elgueta Herrera - 23200510 - Sección 5
+- Gonzalo Andrés Moraga Monsalve - 23642025 - Sección 3
+- Javier Ignacio Muñoz Andrade - 23641851 - Sección 3
+- Andrés Enrique Poblete Troncoso - 23644397 - Sección 3
+- Marianna Valentina Sanguinetti Durán - 23646896 - Sección 5
 ### Fecha de entrega
 23 de octubre 2026
 
@@ -36,8 +36,11 @@ en Windows.
 Se recomienda usar el autocompletado con tab para mayor facilidad.
 
 ## Estructura
-- Los parámetros se encuentran definidos en la carpeta ´Instancias Excel´ en el archivo ´datos-opti-E3.xlsx´
-- Los valores de las variables se encuentran en la carpeta "Análisis de Excels" en el archivo ´variables.xlsx´
+### Instancias Excel
+- Los datos se encuentran en el archivo ´variables.xlsx´
+### Análisis de Excels
+- Los valores de las variables se encuentran en el archivo ´variables.xlsx´
+- El output de la terminal durante la ejecución del script para optimizar el modelo se encuentran en ´log.txt´
 ### Archivos python
 - ´load_data.py´: Se encarga de cargar los parámetros definidos en el excel cómo variables (y definir sus conjuntos respectivos). Además se realizan validaciones
 - 'graficos.py´: Tiene 2 funciones: Una para cargar las variables desde un archivo xlsx y la otra para generar los datos respectivos.
