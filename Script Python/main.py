@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.11
 # importamos librerías
 from gurobipy import Model, GRB, quicksum
+import pandas as pd
 import sys
 # Cargamos datos
 from load_data import *
@@ -110,6 +111,90 @@ elif model.Status == GRB.INF_OR_UNBD:
 
 else:
     print("Estado Gurobi:", model.Status)
+
+
+# Guardamos los resultados en dataframes
+x_df = pd.DataFrame(
+    [
+        {"j": j, "k": k, "x": x[j, k].X}
+        for j in F
+        for k in U
+    ]
+)
+y_0_df = pd.DataFrame(
+    [
+        {"j": j, "k": k, "t": t, "y_0": y_0[j, k, t].X}
+        for j in F
+        for k in U
+        for t in T
+    ]
+)
+y_c_df = pd.DataFrame(
+    [
+        {"j": j, "k": k, "t": t, "y_c": y_c[j, k, t].X}
+        for j in F
+        for k in U
+        for t in T
+    ]
+)
+e_df = pd.DataFrame(
+    [
+        {"j": j, "k": k, "t": t, "e": e[j, k, t].X}
+        for j in F
+        for k in U
+        for t in T
+    ]
+)
+u_df = pd.DataFrame(
+    [
+        {"k": k, "t": t, "u": u[k, t].X}
+        for k in U
+        for t in T2
+    ]
+)
+v_df = pd.DataFrame(
+    [
+        {"k": k, "t": t, "v": v[k, t].X}
+        for k in U
+        for t in T
+    ]
+)
+z_df = pd.DataFrame(
+    [
+        {"i": i, "k": k, "t": t, "z": z[i, k, t].X}
+        for i in I
+        for k in U
+        for t in T
+    ]
+)
+w_df = pd.DataFrame(
+    [
+        {"i": i, "p": p, "t": t, "w": w[i, p, t].X}
+        for i in I
+        for p in P
+        for t in T
+    ]
+)
+w_v_df = pd.DataFrame(
+    [
+        {"i": i, "t": t, "w_v": w_v[i, t].X}
+        for i in I
+        for t in T
+    ]
+)
+
+# Los escribimos en el excel
+
+with pd.ExcelWriter(os.path.join("Análisis de Excels", "variables.xlsx")) as writer:
+    x_df.to_excel(writer, sheet_name="x", index=False)
+    y_0_df.to_excel(writer, sheet_name="y_0", index=False)
+    y_c_df.to_excel(writer, sheet_name="y_c", index=False)
+    e_df.to_excel(writer, sheet_name="e", index=False)
+    u_df.to_excel(writer, sheet_name="u", index=False)
+    v_df.to_excel(writer, sheet_name="v", index=False)
+    z_df.to_excel(writer, sheet_name="z", index=False)
+    w_df.to_excel(writer, sheet_name="w", index=False)
+    w_v_df.to_excel(writer, sheet_name="w_v", index=False)
 
 
 with open("variables.txt", "w") as f:
