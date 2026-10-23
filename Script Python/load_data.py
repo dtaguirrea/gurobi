@@ -13,11 +13,11 @@ datos = pd.read_excel(file, sheet_name=None)
 
 # Cargamos parámetros por cada hoja
 ## Generales (c_a, k_i, beta, g_r, g_k)
-c_a= datos["generales"].loc[0, "c_a"]
+c_a= datos["generales"].loc[0, "c_a"] / 1000
 k_i= datos["generales"].loc[0, "k_i"]
 beta= datos["generales"].loc[0, "beta"]
-g_r= datos["generales"].loc[0, "g_r"]
-g_k= datos["generales"].loc[0, "g_k"]
+g_r= datos["generales"].loc[0, "g_r"] / 1000
+g_k= datos["generales"].loc[0, "g_k"] / 1000
 
 d_c = {}
 # los que dependen de p
@@ -39,28 +39,28 @@ m = {}
 if datos["k"].isnull().values.any():
     raise ValueError("Hay valores nulos en la hoja k")
 for k, m_local in iter_over_rows(["k", "m"], datos["k"]):
-    m[k] = m_local
+    m[k] = m_local / 1000
 
 # Los que dependen de i, p
 c_r = {}
 if datos["ip"].isnull().values.any():
     raise ValueError("Hay valores nulos en la hoja ip")
 for i, p, c_r_local in iter_over_rows(["I", "p", "c_r"], datos["ip"]):
-    c_r[i, p] = c_r_local
+    c_r[i, p] = c_r_local / 1000
 
 # Los que dependen de i
 c_v = {}
 if datos["i"].isnull().values.any():
     raise ValueError("Hay valores nulos en la hoja i")
 for i, c_v_local in iter_over_rows(["I", "c_v"], datos["i"]):
-    c_v[i] = c_v_local
+    c_v[i] = c_v_local / 1000
 
 # Los que dependen de i, k
 c_t = {}
 if datos["ik"].isnull().values.any():
     raise ValueError("Hay valores nulos en la hoja ik")
 for i, k, c_t_local in iter_over_rows(["I", "k", "c_t"], datos["ik"]):
-    c_t[i, k] = c_t_local
+    c_t[i, k] = c_t_local / 1000
 
 # Los que dependen de j
 c_p = {}
@@ -71,8 +71,8 @@ tau = {}
 if datos["j"].isnull().values.any():
     raise ValueError("Hay valores nulos en la hoja j")
 for i, c_p_local, c_o_local, t_c_local, sigma_local, tau_local in iter_over_rows(["I", "c_p", "c_o", "t_c", "sigma", "tau"], datos["j"]):
-    c_p[i] = c_p_local
-    c_o[i] = c_o_local
+    c_p[i] = c_p_local / 1000 # kCLP
+    c_o[i] = c_o_local / 1000 # kCLP
     t_c[i] = t_c_local
     sigma[i] = sigma_local
     tau[i] = tau_local

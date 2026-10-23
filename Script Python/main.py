@@ -80,9 +80,10 @@ model.setObjective(func_obj, GRB.MAXIMIZE)
 # Constantes para evitar que gurobi se coma todos los recursos
 model.Params.NumericFocus = 1
 model.Params.DualReductions = 0
-model.Params.SoftMemLimit = 10.0  # GB
-model.Params.Threads = 4
+model.Params.SoftMemLimit = 12.0  # GB
+model.Params.Threads = 12
 model.Params.NodeFileStart = 0.5
+model.Params.MIPGap = 0.008
 # Aplicamos las restricciones
 model.update()
 # Optimizamos
@@ -198,6 +199,7 @@ with pd.ExcelWriter(os.path.join("Análisis de Excels", "variables.xlsx")) as wr
     w_v_df.to_excel(writer, sheet_name="w_v", index=False)
 
 # Generamos los gráficos
+"""
 save_graphs({"x": x_df, 
              "y_0": y_0_df, 
              "y_c": y_c_df, 
@@ -207,6 +209,6 @@ save_graphs({"x": x_df,
              "z": z_df, 
              "w": w_df, 
              "w_v": w_v_df})
-
+"""
 with open("variables.txt", "w") as f:
     print("\n".join(map(lambda i: f"{i.VarName}: {i.X}",model.getVars())), file=f)
