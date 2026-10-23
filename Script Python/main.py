@@ -11,7 +11,7 @@ model.setParam('TimeLimit', 1800)
 
 # Variables
 x = model.addVars(F, U, vtype=GRB.BINARY, name="x_jk")
-y_0 = model.addVars(F, U, T2, vtype=GRB.BINARY, name="y0_jkt")
+y_0 = model.addVars(F, U, T, vtype=GRB.BINARY, name="y0_jkt")
 y_c = model.addVars(F, U, T, vtype=GRB.BINARY, name="yc_jkt")
 e = model.addVars(F, U, T, vtype=GRB.BINARY, name="e_jkt")
 u = model.addVars(U, T2, vtype=GRB.CONTINUOUS, name="u_kt")
@@ -75,8 +75,42 @@ func_obj = -(quicksum(x[j, k]+y_0[j, k, t]+y_c[j, k, t]+e[j, k, t] for j in F fo
 func_obj = quicksum(alpha(t)/((1+k_i)**t) for t in T)
 model.setObjective(func_obj, GRB.MAXIMIZE)
 
-# Resolvemos el modelo
+# Constantes para evitar que gurobi se coma todos los recursos
+model.Params.NumericFocus = 1
+model.Params.DualReductions = 0
+model.Params.SoftMemLimit = 10.0  # GB
+model.Params.Threads = 4
+model.Params.NodeFileStart = 0.5
+# Aplicamos las restricciones
+model.update()
+# Optimizamos
 model.optimize()
-print("Se gano", model.ObjVal)
 
-print("\n".join(map(lambda i: f"{i.VarName}: {i.X}",model.getVars())))
+# Validamos la solución
+if model.Status == GRB.OPTIMAL:
+    print("Se ganó:", model.ObjVal)
+
+elif model.Status == GRB.TIME_LIMIT:
+    if model.SolCount > 0:
+        print("Límite de tiempo. Mejor solución:", model.ObjVal)
+    else:
+        print("Límite de tiempo sin solución factible.")
+
+elif model.Status == GRB.INFEASIBLE:
+    print("El modelo es infactible.")
+    model.computeIIS()
+    model.write("modelo_infactible.ilp")
+    print("IIS guardado en modelo_infactible.ilp")
+
+elif model.Status == GRB.UNBOUNDED:
+    print("El modelo es no acotado.")
+
+elif model.Status == GRB.INF_OR_UNBD:
+    print("El modelo es infactible o no acotado.")
+
+else:
+    print("Estado Gurobi:", model.Status)
+
+
+with open("variables.txt", "w") as f:
+    print("\n".join(map(lambda i: f"{i.VarName}: {i.X}",model.getVars())), file=f)

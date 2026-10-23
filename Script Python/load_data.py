@@ -8,7 +8,7 @@ def iter_over_rows(columns: list[str], df:pd.DataFrame):
     return df[columns].itertuples(index=False, name=None)
 
 # Cargamos el excel
-file = os.path.join("Instancias Excel", "datos.xlsx")
+file = os.path.join("Instancias Excel", "datos2.xlsx")
 datos = pd.read_excel(file, sheet_name=None)
 
 # Cargamos parámetros por cada hoja
@@ -83,12 +83,10 @@ P = list(range(1, len(d_c)+1))
 I = list(range(1, len(c_v)+1))
 U = list(range(1, len(m)+1))
 T = list(range(1, len(d)//len(I)+1))
-T2 = list(range(0, len(c_r)//len(P)+1))
+print("T=", len(T))
+T2 = list(range(0, len(T)+1))
 print(F)
 # Realizamos validaciones
-if len(d) != len(I)*len(T):
-    print(len(d), len(I)*len(T))
-    raise ValueError("La hoja it no tiene valores adecuados")
 
 if len(c_t) != len(I)*len(U):
     raise ValueError(f"La hoja ik no tiene valores adecuados, cantidad de columnas={len(c_t)}",
