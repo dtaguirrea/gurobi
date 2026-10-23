@@ -85,7 +85,7 @@ U = list(range(1, len(m)+1))
 T = list(range(1, len(d)//len(I)+1))
 print("T=", len(T))
 T2 = list(range(0, len(T)+1))
-print(F)
+
 # Realizamos validaciones
 
 if len(c_t) != len(I)*len(U):
