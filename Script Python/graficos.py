@@ -11,24 +11,47 @@ def cargar_datos(path: str) -> dict[str, pd.DataFrame]:
     return datos
 
 
-def save_graphs(dfs: dict[str, pd.DataFrame]) -> None:
-    print("Generando graficos")
+def create_destinations_graph(dfs: dict[str, pd.DataFrame], path: str):
     x = dfs["x"]
+    z = dfs["z"]
+    w = dfs["w"]
+    
     plantas_construidas = x[x["x"] == 1]
     ks = set(plantas_construidas["k"])
-    z = dfs["z"]
-    filtered = z[z["k"].isin(ks)]
+    
+    z_filtered = z[z["k"].isin(ks)]
+    zs = z_filtered.groupby(["k"]).sum()
+    ws = w.groupby(["p"]).sum()
+    # print(ws.columns)
+    ws["k"] = ws.index
+    ws = ws.rename(columns={"w": "z"})
+    zs["k"] = zs.index
+    zs["k"] = zs["k"].astype(str)
+
     total_vert = dfs["w_v"][["w_v"]].sum()
+    print(ws)
     
-    zs = filtered.groupby(["k"]).sum()
-    print(zs.columns.values)
-    zs.plot(kind="bar", use_index=True, y="z")
-    plt.savefig("grafico.png", dpi=300, bbox_inches="tight")
-    
-    # print(filtered)
+    row = pd.DataFrame({"k": "vertedero", "z": total_vert, "i": pd.NA, "t": pd.NA})
+    zs = pd.concat([zs, row])
+    zs = pd.concat([zs, ws])
+    # print(zs)
+    # print(pd.concat([zs, ws]))
+    zs.plot(kind="bar", x="k", y="z", 
+            title="Cantidad de residuos enviados a los destinos",
+            xlabel="Ubicación",
+            ylabel="Toneladas de residuos enviadas durante todos los periodos")
+    print(zs)
+    plt.savefig(os.path.join(path, "destinations.png"), dpi=300, bbox_inches="tight")
+
+
+def save_graphs(dfs: dict[str, pd.DataFrame], path: str) -> None:
+    total_graficos = 1
+    print("Generando graficos")
+    create_destinations_graph(dfs, path)
+    print(f"1/{total_graficos}")
     
 
 
 if __name__ == "__main__":
     dfs = cargar_datos(os.path.join("Análisis de Excels", "variables.xlsx"))
-    save_graphs(dfs)
+    save_graphs(dfs, "Graficos")
