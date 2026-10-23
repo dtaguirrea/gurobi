@@ -5,14 +5,17 @@ import os
 def cargar_datos(path: str) -> dict[str, pd.DataFrame]:
     print("Leyendo datos del excel")
     file = os.path.join(path)
-    datos = pd.read_excel(file, sheet_name=None)
+    datos = pd.read_excel(file, sheet_name=["x", "u", "v", "w", "w_v"])
     print("Datos cargados con éxito")
     return datos
 
 
 def save_graphs(dfs: dict[str, pd.DataFrame]) -> None:
-    print("Generando datos")
-    print(dfs.keys())
+    print("Generando graficos")
+    x = dfs["x"]
+    plantas_construidas = x[x["x"] == 1]
+    print(plantas_construidas)
+    
 
 
 if __name__ == "__main__":
