@@ -8,7 +8,7 @@ def iter_over_rows(columns: list[str], df:pd.DataFrame):
     return df[columns].itertuples(index=False, name=None)
 
 # Cargamos el excel
-file = os.path.join("Instancias Excel", "datos2.xlsx")
+file = os.path.join("Instancias Excel", "datos-opti-E3.xlsx")
 datos = pd.read_excel(file, sheet_name=None)
 
 # Cargamos parámetros por cada hoja
