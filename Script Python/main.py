@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.11
+#!/usr/bin/env python
 # importamos librerías
 from gurobipy import Model, GRB, quicksum
 import pandas as pd
@@ -39,8 +39,7 @@ model.addConstrs((v[k, t] <= quicksum(tau[j]*e[j, k, t] for j in F) for k in U f
 model.addConstrs((d[i, t] == quicksum(w[i, p, t] for p in P)+quicksum(z[i, k, t]for k in U)
                    + w_v[i, t] for t in T for i in I), name="R11")
 model.addConstrs((quicksum(w[i, p, t] for i in I) <= d_c[p] for p in P for t in T), name="R12")
-# model.addConstr((quicksum(z[i, k, t] for k in U for i in I for t in T) >= 0.2*quicksum(d[i, t] for i in I for t in T)), name="R13")
-## No es necesario establecer la no-negatividad de las variables, por convención
+## No es necesario establecer la no-negatividad de las variables, por convención y definición
 ## Ver https://docs.gurobi.com/projects/optimizer/en/current/concepts/modeling/variables.html
 # Se actualiza el modelo
 model.update()
@@ -71,10 +70,6 @@ def alpha(t: int) -> float:
     return alpha_1(t) + alpha_2(t) + alpha_3(t) + alpha_4(t) + alpha_5(t) + alpha_6(t) + alpha_7(t)
 
 # TEMPORAL
-"""
-func_obj = -(quicksum(x[j, k]+y_0[j, k, t]+y_c[j, k, t]+e[j, k, t] for j in F for k in U for t in T) + 
-                    quicksum(u[k, t] + v[k, t] for k in U for t in T) + quicksum(z[i, k, t] for i in I for k in U for t in T) + quicksum(w[i, p, t] for i in I for p in P for t in T) + quicksum(w_v[i, t] for i in I for t in T))
-"""
 func_obj = quicksum(alpha(t)/((1+k_i)**t) for t in T)
 model.setObjective(func_obj, GRB.MAXIMIZE)
 
@@ -192,7 +187,6 @@ objval_df = pd.DataFrame(
 )
 
 # Los escribimos en el excel
-
 with pd.ExcelWriter(os.path.join("Análisis de Excels", "variables.xlsx")) as writer:
     x_df.to_excel(writer, sheet_name="x", index=False)
     y_0_df.to_excel(writer, sheet_name="y_0", index=False)
@@ -205,7 +199,7 @@ with pd.ExcelWriter(os.path.join("Análisis de Excels", "variables.xlsx")) as wr
     w_v_df.to_excel(writer, sheet_name="w_v", index=False)
     objval_df.to_excel(writer, sheet_name="ObjValue", index=False)
 
-# Generamos los gráficos
+# Generamos los gráficos (comentado)
 """
 save_graphs({"x": x_df, 
              "y_0": y_0_df, 
