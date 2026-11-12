@@ -187,7 +187,7 @@ objval_df = pd.DataFrame(
 )
 
 # Los escribimos en el excel
-with pd.ExcelWriter(os.path.join("Análisis de Excels", "variables-beta-6.xlsx")) as writer:
+with pd.ExcelWriter(os.path.join("Análisis de Excels", "variables.xlsx")) as writer:
     x_df.to_excel(writer, sheet_name="x", index=False)
     y_0_df.to_excel(writer, sheet_name="y_0", index=False)
     y_c_df.to_excel(writer, sheet_name="y_c", index=False)
