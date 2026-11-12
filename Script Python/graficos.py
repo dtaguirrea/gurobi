@@ -66,6 +66,8 @@ def save_graphs(dfs: dict[str, pd.DataFrame], path: str) -> None:
     ks = set(plantas_construidas["k"])
     print(f"Plantas construidas en {ks}")
 
+    if not os.path.exists(path):
+        os.mkdir(path)
     
     total_graficos = 3
     print("Generando graficos")
@@ -79,5 +81,8 @@ def save_graphs(dfs: dict[str, pd.DataFrame], path: str) -> None:
 
 
 if __name__ == "__main__":
-    dfs = cargar_datos(os.path.join("Análisis de Excels", "variables.xlsx"))
-    save_graphs(dfs, "Graficos")
+    excel = input("Ingrese el excel: ")
+    # print(os.path.join("Análisis de Excels", "variables-beta-3.xlsx"), os.path.join("Análisis de Excels", excel)) 
+    dfs = cargar_datos(os.path.join("Análisis de Excels", excel))
+    graph_dir = excel.split(".")[0]
+    save_graphs(dfs, os.path.join("Graficos", graph_dir))
