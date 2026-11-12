@@ -31,7 +31,7 @@ model.addConstrs((quicksum(y_c[j, k, t] for j in F for k in U) <= beta for t in 
 model.addConstrs((y_c[j, k, t] == quicksum(y_0[j, k, t1] for t1 in range(max(1, t-t_c[j]+1), t+1)
                                            ) for j in F for k in U for t in T), name="R4")
 model.addConstrs((y_0[j, k, t] == 0 for j in F for k in U for t in range(T[-1]-t_c[j]+1, T[-1])), name="R5")
-model.addConstrs((e[j, k, t] == quicksum(y_0[j, k, t3] for t3 in range(1, t-t_c[j])
+model.addConstrs((e[j, k, t] == quicksum(y_0[j, k, t3] for t3 in range(1, t-t_c[j]+1)
                                          ) for j in F for k in U for t in T), name="R6")
 model.addConstrs((u[k, t] <= quicksum(sigma[j]*e[j, k, t] for j in F) for t in T for k in U), name="R7")
 model.addConstrs((u[k, 0] == 0 for k in U), name="R8")
