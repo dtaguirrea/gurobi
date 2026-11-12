@@ -7,6 +7,7 @@ from graficos import save_graphs
 # Cargamos datos
 from load_data import *
 
+name = sys.argv[1] if len(sys.argv) >= 2 else "variables.xlsx"
 # Creamos el modelo
 model = Model()
 model.setParam('TimeLimit', 1800)
@@ -187,7 +188,7 @@ objval_df = pd.DataFrame(
 )
 
 # Los escribimos en el excel
-with pd.ExcelWriter(os.path.join("Análisis de Excels", "variables.xlsx")) as writer:
+with pd.ExcelWriter(os.path.join("Análisis de Excels", name)) as writer:
     x_df.to_excel(writer, sheet_name="x", index=False)
     y_0_df.to_excel(writer, sheet_name="y_0", index=False)
     y_c_df.to_excel(writer, sheet_name="y_c", index=False)
