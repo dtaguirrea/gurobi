@@ -39,7 +39,7 @@ Se recomienda usar el autocompletado con tab para mayor facilidad.
 
 ## Estructura
 ### Instancias Excel
-- Ene siendo el archivo `datos-opti-E3.xlsx` los datos principales del proyecto.
+- Los datos principales se encuentran en el archivo `datos-opti-E3.xlsx`, mientras que el resto corresponde a modificaciones utilizadas para el análisis de sensibilidad. 
 ### Análisis de Excels
 - Los valores de las variables se encuentran en el archivo `variables.xlsx`
 - El output de la terminal durante la ejecución del script para optimizar el modelo se encuentran en `log.txt`
