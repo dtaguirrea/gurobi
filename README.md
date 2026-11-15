@@ -9,7 +9,7 @@
 - Andrés Enrique Poblete Troncoso - 23644397 - Sección 3
 - Marianna Valentina Sanguinetti Durán - 23646896 - Sección 5
 ### Fecha de entrega
-23 de octubre 2026
+15 de noviembre 2026
 
 ## Ejecución
 __Todos los comandos se toman cómo referencia en la consola ubicándose en la raíz del proyecto (NO EN LA CARPETA DE "Script Python")__
@@ -39,11 +39,11 @@ Se recomienda usar el autocompletado con tab para mayor facilidad.
 
 ## Estructura
 ### Instancias Excel
-- Los datos se encuentran en el archivo `datos-opti-E3.xlsx`
+- Ene siendo el archivo `datos-opti-E3.xlsx` los datos principales del proyecto.
 ### Análisis de Excels
 - Los valores de las variables se encuentran en el archivo `variables.xlsx`
 - El output de la terminal durante la ejecución del script para optimizar el modelo se encuentran en `log.txt`
-### Archivos python
+### Script python
 - `load_data.py`: Se encarga de cargar los parámetros definidos en el excel cómo variables (y definir sus conjuntos respectivos). Además se realizan validaciones
 - `graficos.py`: Tiene 2 funciones: Una para cargar las variables desde un archivo xlsx y la otra para generar los datos respectivos.
 - `main.py`: Se cargan los datos con el módulo `load_data.py`, define el modelo, se resuelve, se exporta a un excel y se guardan los gráficos con la función definida en `graficos.py`.
