@@ -62,7 +62,7 @@ def create_plants_vs_time(dfs: dict[str, pd.DataFrame], path: str, ks):
 
 def save_graphs(dfs: dict[str, pd.DataFrame], path: str) -> None:
     x = dfs["x"]
-    plantas_construidas = x[x["x"] == 1]
+    plantas_construidas = x[x["x"] > 0.5]
     ks = set(plantas_construidas["k"])
     print(f"Plantas construidas en {ks}")
 
